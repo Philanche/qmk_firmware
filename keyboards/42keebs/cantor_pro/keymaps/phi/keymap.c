@@ -23,7 +23,110 @@ enum layers {
   NUMBERS,
   GREEK,
   PROGRAMMING,
-  MATHS
+  MATHS,
+  NUMPAD
+};
+
+enum unicode_names {
+  alpha,
+  Alpha,
+  beta,
+  Beta,
+  gamma,
+  Gamma,
+  delta,
+  Delta,
+  epsilon,
+  Epsilon,
+  zeta,
+  Zeta,
+  eta,
+  Eta,
+  theta,
+  Theta,
+  iota,
+  Iota,
+  kappa,
+  Kappa,
+  lambda,
+  Lambda,
+  mu,
+  Mu,
+  nu,
+  Nu,
+  xi,
+  Xi,
+  omicron,
+  Omicron,
+  pi,
+  Pi,
+  rho,
+  Rho,
+  sigma,
+  Sigma,
+  tau,
+  Tau,
+  upsilon,
+  Upsilon,
+  phi,
+  Phi,
+  chi,
+  Chi,
+  psi,
+  Psi,
+  omega,
+  Omega,
+};
+
+const uint32_t PROGMEM unicode_map[] = {
+  [alpha] = 0x03B1,
+  [Alpha] = 0x0391,
+  [beta] = 0x03B2,
+  [Beta] = 0x0392,
+  [gamma] = 0x03B3,
+  [Gamma] = 0x0393,
+  [delta] = 0x03B4,
+  [Delta] = 0x0394,
+  [epsilon] = 0x03B5,
+  [Epsilon] = 0x395,
+  [zeta] = 0x03B6,
+  [Zeta] = 0x0396,
+  [eta] = 0x03B7,
+  [Eta] = 0x0397,
+  [theta] = 0x03B8,
+  [Theta] = 0x0398,
+  [iota] = 0x03B9,
+  [Iota] = 0x0399,
+  [kappa] = 0x03BA,
+  [Kappa] = 0x039A,
+  [lambda] = 0x03BB,
+  [Lambda] = 0x039B,
+  [mu] = 0x03BC,
+  [Mu] = 0x039C,
+  [nu] = 0x03BD,
+  [Nu] = 0x039D,
+  [xi] = 0x03BE,
+  [Xi] = 0x039E,
+  [omicron] = 0x03BF,
+  [Omicron] = 0x039F,
+  [pi] = 0x03C0,
+  [Pi] = 0x03A0,
+  [rho] = 0x03C1,
+  [Rho] = 0x03A1,
+  [sigma] = 0x03C3,
+  [Sigma] = 0x03A3,
+  [tau] = 0x03C4,
+  [Tau] = 0x03A4,
+  [upsilon] = 0x03C5,
+  [Upsilon] = 0x03A5,
+  [phi] = 0x03D5,
+  [Phi] = 0x03A6,
+  [chi] = 0x03C7,
+  [Chi] = 0x03A7,
+  [psi] = 0x03C8,
+  [Psi] = 0x03A8,
+  [omega] = 0x03C9,
+  [Omega] = 0x03A9,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -64,7 +167,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______ , KC_1        , KC_2        , KC_3        , KC_4        , KC_5   ,                        KC_6   , KC_7        , KC_8        , KC_9        , KC_0        , _______,
         KC_F12  , KC_F1       , KC_F2       , KC_F3       , KC_F4       , KC_F5  ,                        KC_F6  , KC_F7       , KC_F8       , KC_F9       , KC_F10      , KC_F11 ,
                                                                  _______, _______, _______,      _______, _______, _______
-				   )
+				   ),
+    [GREEK] = LAYOUT_split_3x6_3(
+	-
+	_______ , UP(nu,Nu)      , UP(lambda,Lambda), UP(delta,Delta), UP(phi,Phi)    , UP(chi,Chi)  ,          UP(gamma,Gamma), UP(pi,Pi) , UP(upsilon,Upsilon), UP(omicron,Omicron), _______      , _______,
+        _______ , UP(sigma,Sigma), UP(rho,Rho)      , UP(tau,Tau)    , UP(theta,Theta), UP(beta,Beta),          UP(omega,Omega), UP(xi,Xi) , UP(epsilon,Epsilon), UP(alpha,Alpha)    , UP(iota,Iota), _______,
+        _______ , _______        , UP(mu,Mu)        , UP(kappa,Kappa), UP(eta,Eta)    , _______      ,          _______        , UP(psi,Psi), UP(zeta,Zeta)     , _______            , _______      , _______,
+                                                                              _______, _______, _______,      _______, _______, _______
+								 ),
+    [PROGRAMMING] = LAYOUT_split_3x6_3(
+        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
+        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
+        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
+                                                                 _______, _______, _______,      _______, _______, _______
+								 ),
+    [MATHS] = LAYOUT_split_3x6_3(
+        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
+        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
+        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
+                                                                 _______, _______, _______,      _______, _______, _______
+								 ),
+    [NUMPAD] = LAYOUT_split_3x6_3(
+        _______ , _______     , KC_KP_7     , KC_KP_8     , KC_KP_9     , _______,                        _______, KC_KP_7     , KC_KP_8     , KC_KP_9     , _______     , _______,
+        _______ , _______     , KC_KP_4     , KC_KP_5     , KC_KP_6     , _______,                        _______, KC_KP_4     , KC_KP_5     , KC_KP_6     , _______     , _______,
+        _______ , _______     , KC_KP_1     , KC_KP_2     , KC_KP_3     , _______,                        _______, KC_KP_1     , KC_KP_2     , KC_KP_3     , _______     , _______,
+                                                                 _______, _______, _______,      _______, _______, _______
+								 ),
     /*    [EMPTY] = LAYOUT_split_3x6_3(
         _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
         _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
@@ -73,7 +201,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 								 ),*/
 };
 
-// TODO: Make layers. Combos (A + E = Æ; Tap Dance combo to go to GAMING. ) Layer movement in general.
+// TODO: Make layers. Combos (A + E = Æ; Tap Dance combo to go to GAMING. ) Layer movement in general. (Numpad layer = double tap number layer key)
+// Layers to make: Maths; Gaming typing; 
 
 bool shifted[NB_OF_KEYCODES];
 
