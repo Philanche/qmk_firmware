@@ -22,7 +22,7 @@ enum layers {
   NAVIGATION,
   NUMBERS,
   GREEK,
-  PROGRAMMING,
+  SYMBOLS,
   MATHS,
   NUMPAD
 };
@@ -78,6 +78,56 @@ enum unicode_names {
   Omega,
   times,
   divide,
+  dotdotdot,
+  ccedilla,
+  Ccedilla,
+  eacute,
+  Eacute,
+  egrave,
+  Egrave,
+  ecirc,
+  Ecirc,
+  agrave,
+  Agrave,
+  ugrave,
+  Ugrave,
+  aring,
+  Aring,
+  euro,
+  pound,
+  tm,
+  sum,
+  product,
+  empty,
+  implies,
+  impliedby,
+  iff,
+  uni,
+  inter,
+  subseteq,
+  infty,
+  to,
+  from,
+  doublearrow,
+  cdot,
+  plusminus,
+  coloneq,
+  neq,
+  cong,
+  leq,
+  geq,
+  in,
+  notin,
+  lnot,
+  lor,
+  land,
+  exists,
+  forall,
+  oplus,
+  otimes,
+  lefttriangle,
+  langle,
+  rangle,
 };
 
 const uint32_t PROGMEM unicode_map[] = {
@@ -131,6 +181,56 @@ const uint32_t PROGMEM unicode_map[] = {
   [Omega] = 0x03A9,
   [times] = 0x00D7,
   [divide] = 0x00F7,
+  [dotdotdot] = 0x2026,
+  [ccedilla] = 0x00E7,
+  [Ccedilla] = 0x00C7,
+  [eacute] = 0x00E9,
+  [Eacute] = 0x00C9,
+  [egrave] = 0x00E8,
+  [Egrave] = 0x00C8,
+  [ecirc] = 0x00EA,
+  [Ecirc] = 0x00CA,
+  [agrave] = 0x00E0,
+  [Agrave] = 0x00C0,
+  [ugrave] = 0x00F9,
+  [Ugrave] = 0x00D9,
+  [aring] = 0x00E5,
+  [Aring] = 0x00C5,
+  [euro] = 0x20AC,
+  [pound] = 0x00A3,
+  [tm] = 0x2122,
+  [sum] = 0x2211,
+  [product] = 0x220F,
+  [empty] = 0x2205,
+  [implies] = 0x21D2,
+  [impliedby] = 0x21D0,
+  [iff] = 0x2D4,
+  [uni] = 0x222A,
+  [inter] = 0x2229,
+  [subseteq] = 0x2286,
+  [infty] = 0x221E,
+  [to] = 0x2192,
+  [from] = 0x2190,
+  [doublearrow] = 0x2194,
+  [cdot] = 0x00B7,
+  [plusminus] = 0x00B1,
+  [coloneq] = 0x2254,
+  [neq] = 0x2260,
+  [cong] = 0x2245,
+  [leq] = 0x2264,
+  [geq] = 0x2265,
+  [in] = 0x2208,
+  [notin] = 0x2209,
+  [lnot] = 0x00AC,
+  [lor] = 0x2228,
+  [land] = 0x2227,
+  [exists] = 0x2203,
+  [forall] = 0x2200,
+  [oplus] = 0x2295,
+  [otimes] = 0x2297,
+  [lefttriangle] = 0x22B4,
+  [langle] = 0x3008,
+  [rangle] = 0x3009,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -161,13 +261,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                  _______, _______, _______,      _______, _______, _______
 				  ),
     [NAVIGATION] = LAYOUT_split_3x6_3(
-	_______ , KC_BRIU     , _______     , KC_UP       , _______     , _______,                        _______, _______     , KC_PGUP     , _______     , KC_VOLU     , _______,
+	_______ , KC_BRIU     , _______     , KC_UP       , _______     , _______,                        _______, _______     , KC_PGUP     , _______     , KC_VOLU     , KC_PWR ,
         _______ , KC_PAUS     , KC_LEFT     , KC_DOWN     , KC_RIGHT    , _______,                        _______, KC_HOME     , KC_PGDN     , KC_END      , KC_MUTE     , _______,
         _______ , KC_BRID     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , KC_VOLD     , _______,
                                                                  _______, _______, _______,      _______, _______, _______
 				      ),
     [NUMBERS] = LAYOUT_split_3x6_3(
-	_______ , KC_PPLS     , KC_PMNS     , UM(times)   , UM(divide)  , _______,                        _______, KC_PEQL     , KC_AT       , KC_HASH     , KC_TILDE    , _______,
+	_______ , KC_PPLS     , KC_PMNS     , UM(times)   , UM(divide)  , _______,                        KC_PERC, KC_PEQL     , KC_AT       , KC_HASH     , KC_TILDE    , _______,
         _______ , KC_1        , KC_2        , KC_3        , KC_4        , KC_5   ,                        KC_6   , KC_7        , KC_8        , KC_9        , KC_0        , _______,
         KC_F12  , KC_F1       , KC_F2       , KC_F3       , KC_F4       , KC_F5  ,                        KC_F6  , KC_F7       , KC_F8       , KC_F9       , KC_F10      , KC_F11 ,
                                                                  _______, _______, _______,      _______, _______, _______
@@ -178,16 +278,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______ , _______        , UP(mu,Mu)        , UP(kappa,Kappa), UP(eta,Eta)    , _______      ,          _______        , UP(psi,Psi), UP(zeta,Zeta)     , _______            , _______      , _______,
                                                                               _______, _______, _______,      _______, _______, _______
 								 ),
-    [PROGRAMMING] = LAYOUT_split_3x6_3(
-        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
-        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
-        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
+    [SYMBOLS] = LAYOUT_split_3x6_3(
+        _______ , UM(pound)   , _______     , _______     , _______     , _______,                        _______, _______              , UP(ugrave,Ugrave), _______          , UM(dotdotdot), _______,
+        _______ , UM(euro)    , KC_ASTR     , KC_CIRC     , KC_AMPR     , _______,                        _______, UP(ccedilla,Ccedilla), UP(eacute,Eacute), UP(agrave,Agrave), _______      , _______,
+        _______ , KC_DLR      , _______     , _______     , KC_PIPE     , _______,                        _______, UP(ecirc,Ecirc)      , UP(egrave,Egrave), UP(aring,Aring)  , _______      , _______,
                                                                  _______, _______, _______,      _______, _______, _______
 								 ),
     [MATHS] = LAYOUT_split_3x6_3(
-        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
-        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
-        _______ , _______     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , _______     , _______,
+	UM(from)     , UM(lor)     , UM(oplus)   , UM(otimes)  , UM(cdot)        , _______,                        _______, UM(product) , UM(uni)     , UM(empty)   , UM(cong)    , UM(to)     ,
+        UM(impliedby), UM(sum)     , UM(infty)   , UM(in)      , UM(inter)       , UM(leq),                        UM(geq), UM(subseteq), UM(exists)  , UM(forall)  , UM(coloneq) , UM(implies),
+        UM(langle)   , UM(land)    , _______     , UM(notin)   , UM(lefttriangle), _______,                        _______, _______     , UM(lnot)    , _______     , UM(neq)     , UM(rangle) ,
                                                                  _______, _______, _______,      _______, _______, _______
 								 ),
     [NUMPAD] = LAYOUT_split_3x6_3(
@@ -204,8 +304,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 								 ),*/
 };
 
-// TODO: Make layers. Combos (A + E = Æ; Tap Dance combo to go to GAMING. ) Layer movement in general. (Numpad layer = double tap number layer key)
-// Layers to make: Maths; Gaming typing; 
+// TODO: Make layers. Combos (A + E = Æ; T + M = ™; O + E = Œ; + + - = ±; => + <= = <=>; -> + <- = <->; Tap Dance combo to go to GAMING. ) Layer movement in general. (Numpad layer = double tap number layer key)
+// Layers to make: Maths; Gaming typing;
+
+// Use KC_PAUS for wifi.
 
 bool shifted[NB_OF_KEYCODES];
 
