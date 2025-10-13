@@ -1,5 +1,4 @@
 DEFAULT_FOLDER=42keebs/cantor_pro/frood_v2
 SERIAL_DRIVER=vendor
 UNICODE_COMMON = yes
-UNICODE_ENABLE = yes
 UNICODEMAP_ENABLE = yes

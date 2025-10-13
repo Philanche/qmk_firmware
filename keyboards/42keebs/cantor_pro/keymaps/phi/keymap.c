@@ -76,6 +76,8 @@ enum unicode_names {
   Psi,
   omega,
   Omega,
+  times,
+  divide,
 };
 
 const uint32_t PROGMEM unicode_map[] = {
@@ -127,6 +129,8 @@ const uint32_t PROGMEM unicode_map[] = {
   [Psi] = 0x03A8,
   [omega] = 0x03C9,
   [Omega] = 0x03A9,
+  [times] = 0x00D7,
+  [divide] = 0x00F7,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -163,13 +167,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                  _______, _______, _______,      _______, _______, _______
 				      ),
     [NUMBERS] = LAYOUT_split_3x6_3(
-	_______ , KC_PPLS     , KC_PMNS     , UC(0xD7)    , UC(0xF7)    , _______,                        _______, KC_PEQL     , KC_AT       , KC_HASH     , KC_TILDE    , _______,
+	_______ , KC_PPLS     , KC_PMNS     , UM(times)   , UM(divide)  , _______,                        _______, KC_PEQL     , KC_AT       , KC_HASH     , KC_TILDE    , _______,
         _______ , KC_1        , KC_2        , KC_3        , KC_4        , KC_5   ,                        KC_6   , KC_7        , KC_8        , KC_9        , KC_0        , _______,
         KC_F12  , KC_F1       , KC_F2       , KC_F3       , KC_F4       , KC_F5  ,                        KC_F6  , KC_F7       , KC_F8       , KC_F9       , KC_F10      , KC_F11 ,
                                                                  _______, _______, _______,      _______, _______, _______
 				   ),
     [GREEK] = LAYOUT_split_3x6_3(
-	-
 	_______ , UP(nu,Nu)      , UP(lambda,Lambda), UP(delta,Delta), UP(phi,Phi)    , UP(chi,Chi)  ,          UP(gamma,Gamma), UP(pi,Pi) , UP(upsilon,Upsilon), UP(omicron,Omicron), _______      , _______,
         _______ , UP(sigma,Sigma), UP(rho,Rho)      , UP(tau,Tau)    , UP(theta,Theta), UP(beta,Beta),          UP(omega,Omega), UP(xi,Xi) , UP(epsilon,Epsilon), UP(alpha,Alpha)    , UP(iota,Iota), _______,
         _______ , _______        , UP(mu,Mu)        , UP(kappa,Kappa), UP(eta,Eta)    , _______      ,          _______        , UP(psi,Psi), UP(zeta,Zeta)     , _______            , _______      , _______,

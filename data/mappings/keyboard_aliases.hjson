@@ -2320,6 +2320,9 @@
         "target": "zsa/planck_ez/base"
     },
     // DEFAULT_FOLDER removed during 2025 Q3 cycle
+    "42keebs/cantor_pro": {
+	"target": "42keebs/cantor_pro/frood_v2"
+    },
     "cannonkeys/satisfaction75": {
         "target": "cannonkeys/satisfaction75/rev1"
     },
