@@ -3,31 +3,33 @@
 
 #include QMK_KEYBOARD_H
 
-#define NB_OF_KEYCODES 8
+#define NB_OF_KEYCODES 8 // for our implementation of custom keycodes. Might get removed
 
 enum phi_keycodes {
-    PHI_LPRN = SAFE_RANGE,
-    PHI_RPRN,
-    PHI_QUES,
-    PHI_LCBR,
-    PHI_RCBR,
-    PHI_DOT,
-    PHI_SLSH,
-    PHI_COMM
+  // keycodes for punctuation combos that are not in qwerty
+  PHI_LPRN = SAFE_RANGE,
+  PHI_RPRN,
+  PHI_QUES,
+  PHI_LCBR,
+  PHI_RCBR,
+  PHI_DOT,
+  PHI_SLSH,
+  PHI_COMM
 };
 
 enum layers {
-  BASE,
-  GAMING,
-  NAVIGATION,
-  NUMBERS,
-  GREEK,
-  SYMBOLS,
-  MATHS,
-  NUMPAD
+  BASE, // Valid layout
+  GAMING, // Qwerty-like, used for gaming
+  NAVIGATION, // Arrows and similar navigation
+  NUMBERS, // Numbers and function keys
+  GREEK, // Greek letters
+  SYMBOLS, // Additional symbols and accented letters
+  MATHS, // Maths symbols, will have LaTeX translation
+  NUMPAD // For fast number entry, for example OTP
 };
 
 enum unicode_names {
+  // Greek letters
   alpha,
   Alpha,
   beta,
@@ -76,8 +78,10 @@ enum unicode_names {
   Psi,
   omega,
   Omega,
+  // Maths on the number layer
   times,
   divide,
+  // Extra symbols and letters
   dotdotdot,
   ccedilla,
   Ccedilla,
@@ -96,6 +100,7 @@ enum unicode_names {
   euro,
   pound,
   tm,
+  // Maths symbols
   sum,
   product,
   empty,
@@ -305,9 +310,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // TODO: Make layers. Combos (A + E = Æ; T + M = ™; O + E = Œ; + + - = ±; => + <= = <=>; -> + <- = <->; Tap Dance combo to go to GAMING. ) Layer movement in general. (Numpad layer = double tap number layer key)
-// Layers to make: Maths; Gaming typing;
+// Layers to make: Gaming typing;
+// TODO: LaTeX toggle/handling.
 
 // Use KC_PAUS for wifi.
+
+// Custom keycode implementation. Might be changed for qmk's key override
 
 bool shifted[NB_OF_KEYCODES];
 
