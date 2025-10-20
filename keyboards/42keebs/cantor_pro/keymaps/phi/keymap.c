@@ -236,7 +236,7 @@ const uint32_t PROGMEM unicode_map[] = {
   [tm] = 0x2122,
 };
 
-const char PROGMEM latex_name[][16] = {
+const char PROGMEM *latex_name[] = {
   [times] = "times ",
   [divide] = "frac",
   [sum] = "sum ",
