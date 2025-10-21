@@ -127,6 +127,7 @@ enum unicode_names {
   euro,
   pound,
   tm,
+  celsius,
 };
 
 const uint32_t PROGMEM unicode_map[] = {
@@ -234,6 +235,7 @@ const uint32_t PROGMEM unicode_map[] = {
   [euro] = 0x20AC,
   [pound] = 0x00A3,
   [tm] = 0x2122,
+  [celsius] = 0x2103,
 };
 
 const char PROGMEM *latex_name[] = {
@@ -298,7 +300,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LPRN , KC_V        , KC_L        , KC_D        , KC_F        , KC_X   ,                        KC_G   , KC_P        , KC_U        , KC_O        , KC_DOT      , KC_RPRN,
         KC_MINUS, LALT_T(KC_S), LCTL_T(KC_R), LGUI_T(KC_T), LSFT_T(KC_N), KC_B   ,                        KC_W   , RSFT_T(KC_C), RGUI_T(KC_E), RCTL_T(KC_A), RALT_T(KC_I), KC_QUES,
         KC_LCBR , KC_J        , KC_M        , KC_K        , KC_H        , KC_Q   ,                        KC_QUOT, KC_Y        , KC_Z        , KC_SLSH     , KC_COMM     , KC_RCBR,
-	                                                         KC_ENT , KC_SPC , MO(NUMBERS),  TD(NUM), KC_BSPC, MO(NAVIGATION)
+	                                                         KC_ENT , KC_SPC , TD(NUM),  MO(SYMBOLS), KC_BSPC, MO(NAVIGATION)
 				),
     [GAMING] = LAYOUT_split_3x6_3(
         KC_T    , KC_TAB      , KC_Q        , KC_W        , KC_E        , KC_R   ,                        KC_Y   , KC_U        , KC_I        , KC_O        , KC_P        , KC_LBRC,
@@ -308,7 +310,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 				  ),
     [NAVIGATION] = LAYOUT_split_3x6_3(
 	KC_ESC  , KC_BRIU     , _______     , KC_UP       , _______     , _______,                        _______, _______     , KC_PGUP     , _______     , KC_VOLU     , KC_PWR ,
-        _______ , KC_PAUS     , KC_LEFT     , KC_DOWN     , KC_RIGHT    , _______,                        _______, KC_HOME     , KC_PGDN     , KC_END      , KC_MUTE     , _______,
+        KC_TAB  , KC_PAUS     , KC_LEFT     , KC_DOWN     , KC_RIGHT    , _______,                        _______, KC_HOME     , KC_PGDN     , KC_END      , KC_MUTE     , _______,
         _______ , KC_BRID     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , KC_VOLD     , _______,
                                                                  _______, _______, _______,      _______, _______, _______
 				      ),
@@ -325,13 +327,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                               _______, _______, _______,      _______, _______, _______
 								 ),
     [SYMBOLS] = LAYOUT_split_3x6_3(
-        _______ , UM(pound)   , _______     , _______     , _______        , _______,                        _______, _______              , UP(ugrave,Ugrave), _______          , UM(dotdotdot), _______,
-        _______ , UM(euro)    , KC_ASTR     , KC_CIRC     , LSFT_T(KC_AMPR), _______,                        _______, UP(ccedilla,Ccedilla), UP(eacute,Eacute), UP(agrave,Agrave), _______      , _______,
-        _______ , KC_DLR      , _______     , _______     , KC_PIPE        , _______,                        _______, UP(ecirc,Ecirc)      , UP(egrave,Egrave), UP(aring,Aring)  , _______      , _______,
+        _______     , UM(pound)   , _______     , _______     , _______        , _______,                        _______, _______              , UP(ugrave,Ugrave), _______          , UM(dotdotdot), _______,
+        UM(celsius) , UM(euro)    , KC_ASTR     , KC_CIRC     , LSFT_T(KC_AMPR), KC_GRV ,                        _______, UP(ccedilla,Ccedilla), UP(eacute,Eacute), UP(agrave,Agrave), _______      , _______,
+        _______     , KC_DLR      , _______     , _______     , KC_PIPE        , _______,                        _______, UP(ecirc,Ecirc)      , UP(egrave,Egrave), UP(aring,Aring)  , _______      , _______,
                                                                  _______, _______, _______,      _______, _______, _______
 								 ),
     [MATHS] = LAYOUT_split_3x6_3(
-	UM(from)     , UM(lor)     , UM(oplus)   , UM(otimes)  , UM(cdot)        , PHI_LATEX,                        _______, UM(product) , UM(uni)     , UM(empty)   , UM(cong)    , UM(to)     ,
+	UM(from)     , UM(lor)     , UM(oplus)   , UM(otimes)  , UM(cdot)        , PHI_LATEX,                        UC_NEXT, UM(product) , UM(uni)     , UM(empty)   , UM(cong)    , UM(to)     ,
         UM(impliedby), UM(sum)     , UM(infty)   , UM(in)      , UM(inter)       , UM(leq)  ,                        UM(geq), UM(subseteq), UM(exists)  , UM(forall)  , UM(coloneq) , UM(implies),
         UM(langle)   , UM(land)    , _______     , UM(notin)   , UM(lefttriangle), _______  ,                        _______, _______     , UM(lnot)    , _______     , UM(neq)     , UM(rangle) ,
                                                                  _______, _______, _______  ,               _______, _______, _______
