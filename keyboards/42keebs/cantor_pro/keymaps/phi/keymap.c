@@ -19,6 +19,12 @@ enum layers {
   ARROWS, // Right hand arrows, for gaming
 };
 
+enum tap_dance {
+  NUM,
+  TD_GAMING,
+  NAV,
+};
+
 enum unicode_names {
   // Maths symbols
   times,
@@ -275,12 +281,6 @@ const char PROGMEM *latex_name[] = {
   [rangle] = "right> ",
 };
 
-// Tap Dances
-enum tap_dance {
-  NUM,
-  TD_GAMING,
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      /*
       * ┌───┬───┬───┬───┬───┬───┐       ┌───┬───┬───┬───┬───┬───┐
@@ -300,7 +300,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LPRN , KC_V        , KC_L        , KC_D        , KC_F        , KC_X   ,                        KC_G   , KC_P        , KC_U        , KC_O        , KC_DOT      , KC_RPRN,
         KC_MINUS, LALT_T(KC_S), LCTL_T(KC_R), LGUI_T(KC_T), LSFT_T(KC_N), KC_B   ,                        KC_W   , RSFT_T(KC_C), RGUI_T(KC_E), RCTL_T(KC_A), RALT_T(KC_I), KC_QUES,
         KC_LCBR , KC_J        , KC_M        , KC_K        , KC_H        , KC_Q   ,                        KC_QUOT, KC_Y        , KC_Z        , KC_SLSH     , KC_COMM     , KC_RCBR,
-	                                                         KC_ENT , KC_SPC , TD(NUM),  MO(SYMBOLS), KC_BSPC, MO(NAVIGATION)
+	                                                         KC_ENT , KC_SPC , TD(NUM),  MO(SYMBOLS), KC_BSPC, TD(NAV)
 				),
     [GAMING] = LAYOUT_split_3x6_3(
         KC_T    , KC_TAB      , KC_Q        , KC_W        , KC_E        , KC_R   ,                        KC_Y   , KC_U        , KC_I        , KC_O        , KC_P        , KC_LBRC,
@@ -310,7 +310,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 				  ),
     [NAVIGATION] = LAYOUT_split_3x6_3(
 	KC_ESC  , KC_BRIU     , _______     , KC_UP       , _______     , _______,                        _______, _______     , KC_PGUP     , _______     , KC_VOLU     , KC_PWR ,
-        KC_TAB  , KC_PAUS     , KC_LEFT     , KC_DOWN     , KC_RIGHT    , _______,                        _______, KC_HOME     , KC_PGDN     , KC_END      , KC_MUTE     , _______,
+        KC_TAB  , KC_PAUS     , KC_LEFT     , KC_DOWN     , KC_RIGHT    , _______,                        _______, KC_HOME     , KC_PGDN     , KC_END      , KC_MUTE     , UG_TOGG,
         _______ , KC_BRID     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , KC_VOLD     , _______,
                                                                  _______, _______, _______,      _______, _______, _______
 				      ),
@@ -358,13 +358,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 								 ),*/
 };
 
+// Tap Dances
 
-// Runs every time a layer changes. Will have RGB underglow changes in the future.
-layer_state_t layer_state_set_user(layer_state_t state) {
-  state = update_tri_layer_state(state, NUMBERS, SYMBOLS, GREEK);
-  state = update_tri_layer_state(state, NUMBERS, NAVIGATION, MATHS);
-  return state;
-}
+tap_dance_action_t tap_dance_actions[] = {
+  [NUM] = ACTION_TAP_DANCE_LAYER_TOGGLE(MO(NUMBERS), NUMPAD),
+  [TD_GAMING] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_NO, GAMING),
+  [NAV] = ACTION_TAP_DANCE_LAYER_TOGGLE(MO(NAVIGATION), ARROWS),
+};
 
 // Combos
 
@@ -388,14 +388,6 @@ combo_t key_combos[] = {
   COMBO(ungaming_combo, TD(TD_GAMING)),
 };
 
-// Tap Dance
-
-tap_dance_action_t tap_dance_actions[] = {
-  [NUM] = ACTION_TAP_DANCE_LAYER_TOGGLE(MO(NUMBERS), NUMPAD),
-  [TD_GAMING] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_NO, GAMING),
-};
-
-
 // Key overrides to make more custom keys.
 
 const key_override_t left_bracket = ko_make_basic(MOD_MASK_SHIFT, KC_LPRN, KC_LBRC);
@@ -417,6 +409,54 @@ const key_override_t *key_overrides[] = {
   &backslash,
   &semicolon,
 };
+
+
+// Runs every time a layer changes. Will have RGB underglow changes in the future.
+layer_state_t layer_state_set_user(layer_state_t state) {
+  state = update_tri_layer_state(state, NUMBERS, SYMBOLS, GREEK);
+  state = update_tri_layer_state(state, NUMBERS, NAVIGATION, MATHS);
+  switch (get_highest_layer(state & ~(1 << ARROWS))) {
+  case BASE:
+    rgblight_mode(RGBLIGHT_MODE_BREATHING);
+    rgblight_setrgb_at(255, 255, 255, 0);
+    rgblight_setrgb_at(245, 169, 184, 1);
+    rgblight_setrgb_at( 91, 206, 250, 2);
+    rgblight_setrgb_at( 91, 206, 250, 3);
+    rgblight_setrgb_at(245, 169, 184, 4);
+    rgblight_setrgb_at(255, 255, 255, 5);
+    break;
+  case GAMING:
+    rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL);
+    break;
+  case NAVIGATION:
+    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+    rgblight_setrgb(RGB_TURQUOISE);
+    break;
+  case NUMBERS:
+    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+    rgblight_setrgb(RGB_GOLD);
+    break;
+  case GREEK:
+    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+    rgblight_setrgb(RGB_GREEN);
+    break;
+  case SYMBOLS:
+    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+    rgblight_setrgb(RGB_PURPLE);
+    break;
+  case MATHS:
+    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+    rgblight_setrgb(RGB_RED);
+    break;
+  case NUMPAD:
+    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
+    rgblight_setrgb(RGB_ORANGE);
+    break;
+  }
+  return state;
+}
+
+// Variables to dictate behaviour
 
 bool return_to_gaming = false;
 bool LaTeX_maths = false;
