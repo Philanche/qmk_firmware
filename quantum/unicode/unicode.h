@@ -20,6 +20,7 @@
 
 #include "compiler_support.h"
 #include "unicode_keycodes.h"
+#include "led.h"
 
 /**
  * \file
@@ -49,6 +50,10 @@ enum unicode_input_modes {
 
     UNICODE_MODE_COUNT // Number of available input modes (always leave at the end)
 };
+
+unicode_config_t unicode_config;
+uint8_t          unicode_saved_mods;
+led_t            unicode_saved_led_state;
 
 void unicode_input_mode_init(void);
 

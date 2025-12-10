@@ -26,6 +26,8 @@
 #include <lib/lib8tion/lib8tion.h>
 #include "eeconfig.h"
 
+#include "print.h"
+
 #ifdef RGBLIGHT_SPLIT
 /* for split keyboard */
 #    define RGBLIGHT_SPLIT_SET_CHANGE_MODE rgblight_status.change_flags |= RGBLIGHT_STATUS_CHANGE_MODE
@@ -646,7 +648,7 @@ void rgblight_sethsv_at(uint8_t hue, uint8_t sat, uint8_t val, uint8_t index) {
     if (!rgblight_config.enable) {
         return;
     }
-
+    
     rgb_t rgb = rgblight_hsv_to_rgb((hsv_t){hue, sat, val > RGBLIGHT_LIMIT_VAL ? RGBLIGHT_LIMIT_VAL : val});
     rgblight_setrgb_at(rgb.r, rgb.g, rgb.b, index);
 }

@@ -62,10 +62,6 @@
 #    define UNICODE_TYPE_DELAY 10
 #endif
 
-unicode_config_t unicode_config;
-uint8_t          unicode_saved_mods;
-led_t            unicode_saved_led_state;
-
 #if UNICODE_SELECTED_MODES != -1
 static uint8_t selected[]     = {UNICODE_SELECTED_MODES};
 static int8_t  selected_count = ARRAY_SIZE(selected);

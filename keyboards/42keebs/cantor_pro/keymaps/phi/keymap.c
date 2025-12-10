@@ -3,6 +3,10 @@
 
 #include QMK_KEYBOARD_H
 
+#include "print.h"
+#include "unicode.h"
+#include "transactions.h"
+
 enum custom_keybinds {
   PHI_LATEX = SAFE_RANGE,
 };
@@ -12,8 +16,8 @@ enum layers {
   GAMING, // Qwerty-like, used for gaming
   NAVIGATION, // Arrows and similar navigation
   NUMBERS, // Numbers and function keys
-  GREEK, // Greek letters
   SYMBOLS, // Additional symbols and accented letters
+  GREEK, // Greek letters
   MATHS, // Maths symbols, will have LaTeX translation
   NUMPAD, // For fast number entry, for example OTP
   ARROWS, // Right hand arrows, for gaming
@@ -61,55 +65,56 @@ enum unicode_names {
   lefttriangle,
   langle,
   rangle,
-  // Greek letters
+  // Greek letters with LaTeX commands
   alpha,
-  Alpha,
   beta,
-  Beta,
   gamma,
   Gamma,
   delta,
   Delta,
   epsilon,
-  Epsilon,
   zeta,
-  Zeta,
   eta,
-  Eta,
   theta,
   Theta,
   iota,
-  Iota,
   kappa,
-  Kappa,
   lambda,
   Lambda,
   mu,
-  Mu,
   nu,
-  Nu,
   xi,
   Xi,
-  omicron,
-  Omicron,
   pi,
   Pi,
   rho,
-  Rho,
   sigma,
   Sigma,
   tau,
-  Tau,
   upsilon,
   Upsilon,
   phi,
   Phi,
   chi,
-  Chi,
   psi,
   Psi,
   omega,
   Omega,
+  // Greek Letters without LaTeX commands
+  Alpha,
+  Beta,
+  Epsilon,
+  Zeta,
+  Eta,
+  Iota,
+  Kappa,
+  Mu,
+  Nu,
+  omicron,
+  Omicron,
+  Rho,
+  Tau,
+  Chi,
   // Extra symbols and letters
   ae,
   AE,
@@ -144,7 +149,7 @@ const uint32_t PROGMEM unicode_map[] = {
   [empty] = 0x2205,
   [implies] = 0x21D2,
   [impliedby] = 0x21D0,
-  [iff] = 0x2D4,
+  [iff] = 0x21D4,
   [uni] = 0x222A,
   [inter] = 0x2229,
   [subseteq] = 0x2286,
@@ -279,6 +284,54 @@ const char PROGMEM *latex_name[] = {
   [lefttriangle] = "triangleleft ",
   [langle] = "left< ",
   [rangle] = "right> ",
+  [alpha] = "alpha ",
+  [Alpha] = "A",
+  [beta] = "beta ",
+  [Beta] = "B",
+  [gamma] = "gamma ",
+  [Gamma] = "Gamma ",
+  [delta] = "delta ",
+  [Delta] = "Delta ",
+  [epsilon] = "varepsilon ",
+  [Epsilon] = "E",
+  [zeta] = "zeta ",
+  [Zeta] = "Z",
+  [eta] = "eta ",
+  [Eta] = "H",
+  [theta] = "theta ",
+  [Theta] = "Theta ",
+  [iota] = "iota ",
+  [Iota] = "I",
+  [kappa] = "kappa ",
+  [Kappa] = "K",
+  [lambda] = "lamda ",
+  [Lambda] = "Lamda ",
+  [mu] = "mu ",
+  [Mu] = "M",
+  [nu] = "nu ",
+  [Nu] = "N",
+  [xi] = "xi ",
+  [Xi] = "Xi ",
+  [omicron] = "o",
+  [Omicron] = "O",
+  [pi] = "pi ",
+  [Pi] = "Pi ",
+  [rho] = "rho ",
+  [Rho] = "R",
+  [sigma] = "sigma ",
+  [Sigma] = "Sigma ",
+  [tau] = "tau ",
+  [Tau] = "T",
+  [upsilon] = "upsilon ",
+  [Upsilon] = "Upsilon ",
+  [phi] = "varphi ",
+  [Phi] = "Phi ",
+  [chi] = "Chi ",
+  [Chi] = "X",
+  [psi] = "psi ",
+  [Psi] = "Psi ",
+  [omega] = "omega ",
+  [Omega] = "Omega ",
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -311,7 +364,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [NAVIGATION] = LAYOUT_split_3x6_3(
 	KC_ESC  , KC_BRIU     , _______     , KC_UP       , _______     , _______,                        _______, _______     , KC_PGUP     , _______     , KC_VOLU     , KC_PWR ,
         KC_TAB  , KC_PAUS     , KC_LEFT     , KC_DOWN     , KC_RIGHT    , _______,                        _______, KC_HOME     , KC_PGDN     , KC_END      , KC_MUTE     , UG_TOGG,
-        _______ , KC_BRID     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , KC_VOLD     , _______,
+        EE_CLR  , KC_BRID     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , KC_VOLD     , _______,
                                                                  _______, _______, _______,      _______, _______, _______
 				      ),
     [NUMBERS] = LAYOUT_split_3x6_3(
@@ -320,17 +373,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_F12  , KC_F1       , KC_F2       , KC_F3       , KC_F4       , KC_F5  ,                        KC_F6  , KC_F7       , KC_F8       , KC_F9       , KC_F10      , KC_F11 ,
                                                                  _______, _______, _______,      _______, _______, _______
 				   ),
+    [SYMBOLS] = LAYOUT_split_3x6_3(
+	_______     , UM(pound)   , _______     , _______     , _______        , _______,                        _______, UP(ae,AE)            , UP(ugrave,Ugrave), UP(oe,OE)        , UM(dotdotdot), _______,
+        UM(celsius) , UM(euro)    , KC_ASTR     , KC_CIRC     , LSFT_T(KC_AMPR), KC_GRV ,                        _______, UP(ccedilla,Ccedilla), UP(eacute,Eacute), UP(agrave,Agrave), _______      , _______,
+        _______     , KC_DLR      , UM(tm)      , _______     , KC_PIPE        , _______,                        _______, UP(ecirc,Ecirc)      , UP(egrave,Egrave), UP(aring,Aring)  , _______      , _______,
+                                                                 _______, _______, _______,      _______, _______, _______
+								 ),
     [GREEK] = LAYOUT_split_3x6_3(
 	_______ , UP(nu,Nu)      , UP(lambda,Lambda), UP(delta,Delta), UP(phi,Phi)    , UP(chi,Chi)  ,          UP(gamma,Gamma), UP(pi,Pi) , UP(upsilon,Upsilon), UP(omicron,Omicron), _______      , _______,
-        _______ , UP(sigma,Sigma), UP(rho,Rho)      , UP(tau,Tau)    , UP(theta,Theta), UP(beta,Beta),          UP(omega,Omega), UP(xi,Xi) , UP(epsilon,Epsilon), UP(alpha,Alpha)    , UP(iota,Iota), _______,
+        OS_LSFT , UP(sigma,Sigma), UP(rho,Rho)      , UP(tau,Tau)    , UP(theta,Theta), UP(beta,Beta),          UP(omega,Omega), UP(xi,Xi) , UP(epsilon,Epsilon), UP(alpha,Alpha)    , UP(iota,Iota), OS_RSFT,
         _______ , _______        , UP(mu,Mu)        , UP(kappa,Kappa), UP(eta,Eta)    , _______      ,          _______        , UP(psi,Psi), UP(zeta,Zeta)     , _______            , _______      , _______,
                                                                               _______, _______, _______,      _______, _______, _______
-								 ),
-    [SYMBOLS] = LAYOUT_split_3x6_3(
-        _______     , UM(pound)   , _______     , _______     , _______        , _______,                        _______, _______              , UP(ugrave,Ugrave), _______          , UM(dotdotdot), _______,
-        UM(celsius) , UM(euro)    , KC_ASTR     , KC_CIRC     , LSFT_T(KC_AMPR), KC_GRV ,                        _______, UP(ccedilla,Ccedilla), UP(eacute,Eacute), UP(agrave,Agrave), _______      , _______,
-        _______     , KC_DLR      , _______     , _______     , KC_PIPE        , _______,                        _______, UP(ecirc,Ecirc)      , UP(egrave,Egrave), UP(aring,Aring)  , _______      , _______,
-                                                                 _______, _______, _______,      _______, _______, _______
 								 ),
     [MATHS] = LAYOUT_split_3x6_3(
 	UM(from)     , UM(lor)     , UM(oplus)   , UM(otimes)  , UM(cdot)        , PHI_LATEX,                        UC_NEXT, UM(product) , UM(uni)     , UM(empty)   , UM(cong)    , UM(to)     ,
@@ -339,9 +392,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                  _______, _______, _______  ,               _______, _______, _______
 								 ),
     [NUMPAD] = LAYOUT_split_3x6_3(
-        _______ , _______     , KC_KP_7     , KC_KP_8     , KC_KP_9     , _______,                        _______, KC_KP_7     , KC_KP_8     , KC_KP_9     , _______     , _______,
-        _______ , _______     , KC_KP_4     , KC_KP_5     , KC_KP_6     , _______,                        _______, KC_KP_4     , KC_KP_5     , KC_KP_6     , _______     , _______,
-        _______ , _______     , KC_KP_1     , KC_KP_2     , KC_KP_3     , _______,                        _______, KC_KP_1     , KC_KP_2     , KC_KP_3     , _______     , _______,
+        _______ , _______     , KC_KP_7     , KC_KP_8     , KC_KP_9     , KC_PMNS,                        _______, KC_KP_7     , KC_KP_8     , KC_KP_9     , _______     , _______,
+        _______ , _______     , KC_KP_4     , KC_KP_5     , KC_KP_6     , KC_PPLS,                        _______, KC_KP_4     , KC_KP_5     , KC_KP_6     , _______     , _______,
+        _______ , _______     , KC_KP_1     , KC_KP_2     , KC_KP_3     , KC_PDOT,                        _______, KC_KP_1     , KC_KP_2     , KC_KP_3     , _______     , _______,
                                                                  _______, _______, _______,      _______, _______, _______
 								 ),
     [ARROWS] = LAYOUT_split_3x6_3(
@@ -360,17 +413,42 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // Tap Dances
 
+void tap_num(tap_dance_state_t *state, void *user_data) {
+  layer_on(NUMBERS);
+}
+
+void finished_num(tap_dance_state_t *state, void *user_data) {
+  if(state->count == 2) {
+    layer_invert(NUMPAD);
+  }
+}
+
+void reset_num(tap_dance_state_t *state, void *user_data) {
+  layer_off(NUMBERS);
+}
+
+void tap_nav(tap_dance_state_t *state, void *user_data) {
+  layer_on(NAVIGATION);
+}
+
+void finished_nav(tap_dance_state_t *state, void *user_data) {
+  if(state->count == 2) {
+    layer_invert(ARROWS);
+  }
+}
+
+void reset_nav(tap_dance_state_t *state, void *user_data) {
+  layer_off(NAVIGATION);
+}
+
 tap_dance_action_t tap_dance_actions[] = {
-  [NUM] = ACTION_TAP_DANCE_LAYER_TOGGLE(MO(NUMBERS), NUMPAD),
+  [NUM] = ACTION_TAP_DANCE_FN_ADVANCED(tap_num, finished_num, reset_num),
   [TD_GAMING] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_NO, GAMING),
-  [NAV] = ACTION_TAP_DANCE_LAYER_TOGGLE(MO(NAVIGATION), ARROWS),
+  [NAV] = ACTION_TAP_DANCE_FN_ADVANCED(tap_nav, finished_nav, reset_nav),
 };
 
 // Combos
 
-const uint16_t PROGMEM ae_combo[] = {KC_A, KC_E, COMBO_END};
-const uint16_t PROGMEM oe_combo[] = {KC_O, KC_E, COMBO_END};
-const uint16_t PROGMEM tm_combo[] = {KC_T, KC_M, COMBO_END};
 const uint16_t PROGMEM plusminus_combo[] = {KC_PPLS, KC_PMNS, COMBO_END};
 const uint16_t PROGMEM iff_combo[] = {UM(implies), UM(impliedby), COMBO_END};
 const uint16_t PROGMEM doublearrow_combo[] = {UM(to), UM(from), COMBO_END};
@@ -378,9 +456,6 @@ const uint16_t PROGMEM gaming_combo[] = {KC_LPRN, KC_RPRN, COMBO_END};
 const uint16_t PROGMEM ungaming_combo[] = {KC_T, KC_LBRC, COMBO_END};
 
 combo_t key_combos[] = {
-  COMBO(ae_combo, UP(ae,AE)),
-  COMBO(oe_combo, UP(oe,OE)),
-  COMBO(tm_combo, UM(tm)),
   COMBO(plusminus_combo, UM(plusminus)),
   COMBO(iff_combo, UM(iff)),
   COMBO(doublearrow_combo, UM(doublearrow)),
@@ -410,49 +485,65 @@ const key_override_t *key_overrides[] = {
   &semicolon,
 };
 
+const rgblight_segment_t PROGMEM base_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 12, 0, 0, 255},
+    {1, 4, 247, 255, 245},
+    {2, 2, 139, 255, 250},
+    {7, 4, 247, 255, 245},
+    {8, 2, 139, 255, 250}
+);
 
-// Runs every time a layer changes. Will have RGB underglow changes in the future.
+const rgblight_segment_t PROGMEM gaming_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 1, HSV_RED},
+    {1, 1, HSV_ORANGE},
+    {2, 1, HSV_YELLOW},
+    {3, 1, HSV_GREEN},
+    {4, 1, HSV_BLUE},
+    {5, 1, HSV_PURPLE},
+    {6, 1, HSV_RED},
+    {7, 1, HSV_ORANGE},
+    {8, 1, HSV_YELLOW},
+    {9, 1, HSV_GREEN},
+    {10, 1, HSV_BLUE},
+    {11, 1, HSV_PURPLE}
+);
+
+const rgblight_segment_t PROGMEM navigation_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_CYAN});
+
+const rgblight_segment_t PROGMEM numbers_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_GOLD});
+
+const rgblight_segment_t PROGMEM symbols_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_PURPLE});
+
+const rgblight_segment_t PROGMEM greek_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_GREEN});
+
+const rgblight_segment_t PROGMEM maths_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_RED});
+
+const rgblight_segment_t PROGMEM numpad_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_ORANGE});
+
+const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    base_layer,
+    gaming_layer,
+    navigation_layer,
+    numbers_layer,
+    symbols_layer,
+    greek_layer,
+    maths_layer,
+    numpad_layer
+);
+
+
+// Runs every time a layer changes.
 layer_state_t layer_state_set_user(layer_state_t state) {
   state = update_tri_layer_state(state, NUMBERS, SYMBOLS, GREEK);
   state = update_tri_layer_state(state, NUMBERS, NAVIGATION, MATHS);
-  switch (get_highest_layer(state & ~(1 << ARROWS))) {
-  case BASE:
-    rgblight_mode(RGBLIGHT_MODE_BREATHING);
-    rgblight_setrgb_at(255, 255, 255, 0);
-    rgblight_setrgb_at(245, 169, 184, 1);
-    rgblight_setrgb_at( 91, 206, 250, 2);
-    rgblight_setrgb_at( 91, 206, 250, 3);
-    rgblight_setrgb_at(245, 169, 184, 4);
-    rgblight_setrgb_at(255, 255, 255, 5);
-    break;
-  case GAMING:
-    rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL);
-    break;
-  case NAVIGATION:
-    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_setrgb(RGB_TURQUOISE);
-    break;
-  case NUMBERS:
-    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_setrgb(RGB_GOLD);
-    break;
-  case GREEK:
-    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_setrgb(RGB_GREEN);
-    break;
-  case SYMBOLS:
-    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_setrgb(RGB_PURPLE);
-    break;
-  case MATHS:
-    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_setrgb(RGB_RED);
-    break;
-  case NUMPAD:
-    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_setrgb(RGB_ORANGE);
-    break;
-  }
+  rgblight_set_layer_state(0,layer_state_cmp(state,BASE));
+  rgblight_set_layer_state(1,layer_state_cmp(state,GAMING));
+  rgblight_set_layer_state(2,layer_state_cmp(state,NAVIGATION));
+  rgblight_set_layer_state(3,layer_state_cmp(state,NUMBERS));
+  rgblight_set_layer_state(4,layer_state_cmp(state,SYMBOLS));
+  rgblight_set_layer_state(5,layer_state_cmp(state,GREEK));
+  rgblight_set_layer_state(6,layer_state_cmp(state,MATHS));
+  rgblight_set_layer_state(7,layer_state_cmp(state,NUMPAD));
   return state;
 }
 
@@ -482,16 +573,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     break;
   case PHI_LATEX:
-    LaTeX_maths = !LaTeX_maths;
+    if(record->event.pressed) {
+      LaTeX_maths = !LaTeX_maths;
+      uprintf("LaTeX status: %b", LaTeX_maths);
+    }
     return false;
   case UM(times) ... UM(rangle):
-    if(LaTeX_maths) {
+    if(LaTeX_maths && record->event.pressed) {
       send_char('\\');
       send_string(latex_name[keycode&0x3FF]);
       send_char(' ');
       return false;
     }
     break;
+  case UM(Alpha) ... UM(Chi):
+    if(LaTeX_maths && record->event.pressed) {
+      send_string(latex_name[keycode&0x3FF]);
+      send_char(' ');
+      return false;
+    }
+    break;
+
   }
   return true;
 }
@@ -502,4 +604,64 @@ void keyboard_post_init_user(void) {
   debug_matrix=true;
   debug_keyboard=true;
   //debug_mouse=true;
+  rgblight_layers = rgb_layers;
+  layer_on(BASE);
+}
+
+
+// overwriting the default one to hopefully have electron not mess up
+void unicode_input_start(void) {
+    unicode_saved_led_state = host_keyboard_led_state();
+
+    // Note the order matters here!
+    // Need to do this before we mess around with the mods, or else
+    // UNICODE_KEY_LNX (which is usually Ctrl-Shift-U) might not work
+    // correctly in the shifted case.
+    if (unicode_config.input_mode == UNICODE_MODE_LINUX && unicode_saved_led_state.caps_lock) {
+        tap_code(KC_CAPS_LOCK);
+    }
+
+    unicode_saved_mods = get_mods(); // Save current mods
+    clear_mods();                    // Unregister mods to start from a clean state
+    clear_weak_mods();
+
+    switch (unicode_config.input_mode) {
+        case UNICODE_MODE_LINUX:
+	    register_code(KC_LEFT_SHIFT);
+	    wait_ms(TAP_CODE_DELAY);
+	    register_code(KC_LEFT_CTRL);
+	    wait_ms(TAP_CODE_DELAY);
+	    tap_code(KC_U);
+	    wait_ms(TAP_CODE_DELAY);
+	    unregister_code(KC_LEFT_SHIFT);
+	    wait_ms(TAP_CODE_DELAY);
+	    unregister_code(KC_LEFT_CTRL);
+            break;
+        case UNICODE_MODE_EMACS:
+            // The usual way to type unicode in emacs is C-x-8 <RET> then the unicode number in hex
+            tap_code16(LCTL(KC_X));
+            tap_code16(KC_8);
+            tap_code16(KC_ENTER);
+            break;
+    }
+
+    wait_ms(UNICODE_TYPE_DELAY);
+}
+
+void unicode_input_finish(void) {
+    switch (unicode_config.input_mode) {
+        case UNICODE_MODE_LINUX:
+	    tap_code_delay(KC_SPACE, TAP_CODE_DELAY);
+	    if (unicode_saved_led_state.caps_lock) {
+	      tap_code(KC_CAPS_LOCK);
+	    }
+            break;
+        case UNICODE_MODE_EMACS:
+            tap_code16(KC_ENTER);
+            break;
+    }
+
+    set_mods(unicode_saved_mods); // Reregister previously set mods
+
+    wait_ms(UNICODE_TYPE_DELAY);
 }
