@@ -65,56 +65,55 @@ enum unicode_names {
   lefttriangle,
   langle,
   rangle,
-  // Greek letters with LaTeX commands
+  // Greek letters 
   alpha,
+  Alpha,
   beta,
+  Beta,
   gamma,
   Gamma,
   delta,
   Delta,
   epsilon,
+  Epsilon,
   zeta,
+  Zeta,
   eta,
+  Eta,
   theta,
   Theta,
   iota,
+  Iota,
   kappa,
+  Kappa,
   lambda,
   Lambda,
   mu,
+  Mu,
   nu,
+  Nu,
+  omicron,
+  Omicron,
   xi,
   Xi,
   pi,
   Pi,
   rho,
+  Rho,
   sigma,
   Sigma,
   tau,
+  Tau,
   upsilon,
   Upsilon,
   phi,
   Phi,
   chi,
+  Chi,
   psi,
   Psi,
   omega,
   Omega,
-  // Greek Letters without LaTeX commands
-  Alpha,
-  Beta,
-  Epsilon,
-  Zeta,
-  Eta,
-  Iota,
-  Kappa,
-  Mu,
-  Nu,
-  omicron,
-  Omicron,
-  Rho,
-  Tau,
-  Chi,
   // Extra symbols and letters
   ae,
   AE,
@@ -284,54 +283,54 @@ const char PROGMEM *latex_name[] = {
   [lefttriangle] = "triangleleft ",
   [langle] = "left< ",
   [rangle] = "right> ",
-  [alpha] = "alpha ",
+  [alpha] = "\\alpha ",
   [Alpha] = "A",
-  [beta] = "beta ",
+  [beta] = "\\beta ",
   [Beta] = "B",
-  [gamma] = "gamma ",
-  [Gamma] = "Gamma ",
-  [delta] = "delta ",
-  [Delta] = "Delta ",
-  [epsilon] = "varepsilon ",
+  [gamma] = "\\gamma ",
+  [Gamma] = "\\Gamma ",
+  [delta] = "\\delta ",
+  [Delta] = "\\Delta ",
+  [epsilon] = "\\varepsilon ",
   [Epsilon] = "E",
-  [zeta] = "zeta ",
+  [zeta] = "\\zeta ",
   [Zeta] = "Z",
-  [eta] = "eta ",
+  [eta] = "\\eta ",
   [Eta] = "H",
-  [theta] = "theta ",
-  [Theta] = "Theta ",
-  [iota] = "iota ",
+  [theta] = "\\theta ",
+  [Theta] = "\\Theta ",
+  [iota] = "\\iota ",
   [Iota] = "I",
-  [kappa] = "kappa ",
+  [kappa] = "\\kappa ",
   [Kappa] = "K",
-  [lambda] = "lamda ",
-  [Lambda] = "Lamda ",
-  [mu] = "mu ",
+  [lambda] = "\\lamda ",
+  [Lambda] = "\\Lamda ",
+  [mu] = "\\mu ",
   [Mu] = "M",
-  [nu] = "nu ",
+  [nu] = "\\nu ",
   [Nu] = "N",
-  [xi] = "xi ",
-  [Xi] = "Xi ",
+  [xi] = "\\xi ",
+  [Xi] = "\\Xi ",
   [omicron] = "o",
   [Omicron] = "O",
-  [pi] = "pi ",
-  [Pi] = "Pi ",
-  [rho] = "rho ",
+  [pi] = "\\pi ",
+  [Pi] = "\\Pi ",
+  [rho] = "\\rho ",
   [Rho] = "R",
-  [sigma] = "sigma ",
-  [Sigma] = "Sigma ",
-  [tau] = "tau ",
+  [sigma] = "\\sigma ",
+  [Sigma] = "\\Sigma ",
+  [tau] = "\\tau ",
   [Tau] = "T",
-  [upsilon] = "upsilon ",
-  [Upsilon] = "Upsilon ",
-  [phi] = "varphi ",
-  [Phi] = "Phi ",
-  [chi] = "Chi ",
+  [upsilon] = "\\upsilon ",
+  [Upsilon] = "\\Upsilon ",
+  [phi] = "\\varphi ",
+  [Phi] = "\\Phi ",
+  [chi] = "\\Chi ",
   [Chi] = "X",
-  [psi] = "psi ",
-  [Psi] = "Psi ",
-  [omega] = "omega ",
-  [Omega] = "Omega ",
+  [psi] = "\\psi ",
+  [Psi] = "\\Psi ",
+  [omega] = "\\omega ",
+  [Omega] = "\\Omega ",
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -363,7 +362,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 				  ),
     [NAVIGATION] = LAYOUT_split_3x6_3(
 	KC_ESC  , KC_BRIU     , _______     , KC_UP       , _______     , _______,                        _______, _______     , KC_PGUP     , _______     , KC_VOLU     , KC_PWR ,
-        KC_TAB  , KC_PAUS     , KC_LEFT     , KC_DOWN     , KC_RIGHT    , _______,                        _______, KC_HOME     , KC_PGDN     , KC_END      , KC_MUTE     , UG_TOGG,
+        KC_TAB  , KC_PAUS     , KC_LEFT     , KC_DOWN     , KC_RIGHT    , KC_CAPS,                        CW_TOGG, KC_HOME     , KC_PGDN     , KC_END      , KC_MUTE     , UG_TOGG,
         EE_CLR  , KC_BRID     , _______     , _______     , _______     , _______,                        _______, _______     , _______     , _______     , KC_VOLD     , _______,
                                                                  _______, _______, _______,      _______, _______, _______
 				      ),
@@ -551,6 +550,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 bool return_to_gaming = false;
 bool LaTeX_maths = false;
+uint8_t saved_mods;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch(keycode){
@@ -558,12 +558,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->tap.count && record->event.pressed) {
       tap_code16(KC_AMPR);
       return false;
-    }
-    break;
-  case KC_T:
-    if (IS_LAYER_ON(GAMING)) {
-      return_to_gaming = true;
-      layer_off(GAMING);
     }
     break;
   case KC_ENT:
@@ -580,22 +574,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return false;
   case UM(times) ... UM(rangle):
     if(LaTeX_maths && record->event.pressed) {
+      saved_mods = get_mods();
+      clear_mods();
       send_char('\\');
       send_string(latex_name[keycode&0x3FF]);
-      send_char(' ');
+      set_mods(saved_mods);
       return false;
     }
     break;
-  case UM(Alpha) ... UM(Chi):
+  case UP(alpha,Alpha) ... UP(omega,Omega):
     if(LaTeX_maths && record->event.pressed) {
-      send_string(latex_name[keycode&0x3FF]);
-      send_char(' ');
+      if((get_mods() | get_weak_mods() | get_oneshot_mods()) & MOD_MASK_SHIFT) {
+	keycode >>= 7;
+      } 
+      saved_mods = get_mods();
+      clear_mods();
+      send_string(latex_name[keycode&0x7F]);
+      set_mods(saved_mods);
       return false;
     }
     break;
-
   }
   return true;
+}
+
+void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch(keycode){
+  case KC_T:
+  case KC_SLSH:
+    if (IS_LAYER_ON(GAMING)) { 
+      return_to_gaming = true;
+      layer_off(GAMING);
+    }
+    break;
+  }
 }
 
 void keyboard_post_init_user(void) {
@@ -640,7 +652,9 @@ void unicode_input_start(void) {
         case UNICODE_MODE_EMACS:
             // The usual way to type unicode in emacs is C-x-8 <RET> then the unicode number in hex
             tap_code16(LCTL(KC_X));
+	    wait_ms(TAP_CODE_DELAY);
             tap_code16(KC_8);
+	    wait_ms(TAP_CODE_DELAY);
             tap_code16(KC_ENTER);
             break;
     }
@@ -657,6 +671,7 @@ void unicode_input_finish(void) {
 	    }
             break;
         case UNICODE_MODE_EMACS:
+	    wait_ms(TAP_CODE_DELAY);
             tap_code16(KC_ENTER);
             break;
     }
